@@ -8,13 +8,18 @@ namespace CityInfo.Api.Controllers {
 
         [HttpGet()]
         // GET
-        public JsonResult GetCities() {
-               return new JsonResult(CitiesDataStore.Current.Cities);
+        public IActionResult GetCities() {
+               return Ok(CitiesDataStore.Current.Cities);
         }
 
         [HttpGet("{id}")]
-        public JsonResult GetCity(int id) {
-            return new JsonResult(CitiesDataStore.Current.Cities.FirstOrDefault(c=>c.Id==id));
+        public IActionResult GetCity(int id) {
+            var cityResult = CitiesDataStore.Current.Cities.FirstOrDefault(c=>c.Id==id);
+            if (cityResult == null) {
+                return NotFound();
+            }
+
+            return Ok(cityResult);
         }
     }
 }
